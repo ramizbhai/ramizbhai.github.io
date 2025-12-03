@@ -17,7 +17,7 @@ const fullTitle = title === SITE_CONFIG.title
 const canonicalUrl = new URL(Astro.url.pathname, SITE_CONFIG.url).toString();
 
 // Default OG image (absolute URL)
-const ogImage = `${SITE_CONFIG.url}/my.png`;
+const ogImage = `${SITE_CONFIG.url}/my.webp`;
 ---
 
 <!doctype html>
@@ -61,9 +61,9 @@ const ogImage = `${SITE_CONFIG.url}/my.png`;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/my.png" />
-    <link rel="shortcut icon" type="image/png" href="/my.png" />
-    <link rel="apple-touch-icon" href="/my.png" />
+    <link rel="icon" type="image/webp" href="/my.webp" />
+    <link rel="shortcut icon" type="image/webp" href="/my.webp" />
+    <link rel="apple-touch-icon" href="/my.webp" />
     <title>{fullTitle}</title>
     <slot name="head" />
   </head>

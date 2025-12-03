@@ -1095,7 +1095,7 @@ a, button {
   text-transform: none;
 }
 
-#home img[src="/my.png"],
+#home img[src="/my.webp"],
 #home .hero-profile-image {
   border: none !important;
   outline: none !important;
@@ -1106,7 +1106,7 @@ a, button {
 
 /* Ensure image displays at full size on desktop */
 @media (min-width: 1025px) {
-  #home img[src="/my.png"],
+  #home img[src="/my.webp"],
   #home .hero-profile-image {
     height: 40rem !important;
     width: auto !important;
