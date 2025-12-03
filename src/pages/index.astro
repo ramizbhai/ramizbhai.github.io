@@ -16,7 +16,6 @@ const currentProject = projectsData.find(p => p.isCurrent);
 <BaseLayout title="Home">
   <Fragment slot="head">
     <link rel="preload" as="image" href="/my.webp" fetchpriority="high" />
-    <link rel="preload" as="image" href="/my_large.webp" fetchpriority="high" media="(min-width: 1024px)" />
   </Fragment>
   <Header />
   
@@ -87,7 +86,7 @@ const currentProject = projectsData.find(p => p.isCurrent);
               <!-- Profile Image -->
               <img
                 src="/my.webp"
-                srcset="/my.webp 1x, /my_large.webp 2x"
+                srcset="/my.webp 1x, /my.webp 2x"
                 alt="Ramizbhai Pinjara - Full Stack Developer and UI Specialist Portfolio"
                 class="relative object-contain object-center hero-profile-image"
                 style="width: auto; height: 50rem; max-width: none; background: transparent; z-index: 1; border: none; outline: none; box-shadow: none; display: block;"
