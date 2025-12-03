@@ -8,16 +8,17 @@ interface Props {
 }
 
 const { title = SITE_CONFIG.title, description = SITE_CONFIG.description } = Astro.props;
-// Primary keyword integration: Always include name for brand identity
+// Primary keyword integration: Always include name for brand identity in HTML title,
+// but use a strong, consistent brand title for social sharing.
 const fullTitle = title === SITE_CONFIG.title 
   ? `${SITE_CONFIG.name} | Full Stack Developer` 
   : `${title} | ${SITE_CONFIG.name}`;
 
-// Canonical URL construction
+// Canonical URL construction (used for SEO <link rel="canonical">)
 const canonicalUrl = new URL(Astro.url.pathname, SITE_CONFIG.url).toString();
 
-// Default OG image (absolute URL)
-const ogImage = `${SITE_CONFIG.url}/my.webp`;
+// Default OG/Twitter image (absolute URL)
+const ogImage = 'https://ramizbhai.github.io/thumbnail.webp';
 ---
 
 <!doctype html>
@@ -37,9 +38,12 @@ const ogImage = `${SITE_CONFIG.url}/my.webp`;
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content="RAMIZBHAI PINJARA" />
+    <meta
+      property="og:description"
+      content="Full-Stack Developer skilled in frontend, backend, and building powerful digital products."
+    />
+    <meta property="og:url" content="https://ramizbhai.github.io/" />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -48,8 +52,11 @@ const ogImage = `${SITE_CONFIG.url}/my.webp`;
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content="RAMIZBHAI PINJARA" />
+    <meta
+      name="twitter:description"
+      content="Full-Stack Developer skilled in frontend, backend, and building powerful digital products."
+    />
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={`${SITE_CONFIG.name} - Full Stack Developer Portfolio`} />
     {SOCIAL_LINKS.twitter && (
@@ -61,9 +68,9 @@ const ogImage = `${SITE_CONFIG.url}/my.webp`;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     
     <!-- Favicon -->
-    <link rel="icon" type="image/webp" href="/my.webp" />
-    <link rel="shortcut icon" type="image/webp" href="/my.webp" />
-    <link rel="apple-touch-icon" href="/my.webp" />
+    <link rel="icon" type="image/webp" href="/favicon.webp" />
+    <link rel="shortcut icon" type="image/webp" href="/favicon.webp" />
+    <link rel="apple-touch-icon" href="/favicon.webp" />
     <title>{fullTitle}</title>
     <slot name="head" />
   </head>
