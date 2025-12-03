@@ -39,11 +39,15 @@ import { SITE_CONFIG } from '../utils/constants';
                 <div class="order-1 lg:order-2 flex items-center justify-center" style="display: flex; align-items: center; justify-content: center;">
                   <img
                     src="/about.png"
+                    srcset="/about.png 600w, /about.png 1200w"
+                    sizes="(max-width: 1024px) 70vw, 600px"
                     alt="Ramizbhai Pinjara - Full Stack Developer with 4+ years of experience in web development"
                     class="h-auto rounded-xl object-cover"
                     style="border-radius: var(--radius-lg); max-width: 70%; height: auto; width: 70%;"
                     loading="lazy"
                     decoding="async"
+                    width="600"
+                    height="400"
                   />
                 </div>
               </div>

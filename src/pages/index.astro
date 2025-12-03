@@ -16,6 +16,7 @@ const currentProject = projectsData.find(p => p.isCurrent);
 <BaseLayout title="Home">
   <Fragment slot="head">
     <link rel="preload" as="image" href="/my.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/my_large.png" fetchpriority="high" media="(min-width: 1024px)" />
   </Fragment>
   <Header />
   
@@ -86,12 +87,15 @@ const currentProject = projectsData.find(p => p.isCurrent);
               <!-- Profile Image -->
               <img
                 src="/my.png"
+                srcset="/my.png 1x, /my_large.png 2x"
                 alt="Ramizbhai Pinjara - Full Stack Developer and UI Specialist Portfolio"
                 class="relative object-contain object-center hero-profile-image"
                 style="width: auto; height: 50rem; max-width: none; background: transparent; z-index: 1; border: none; outline: none; box-shadow: none; display: block;"
                 loading="eager"
                 fetchpriority="high"
                 decoding="async"
+                width="800"
+                height="1200"
               />
             </div>
             <!-- Pagination Dots -->
@@ -125,12 +129,16 @@ const currentProject = projectsData.find(p => p.isCurrent);
             <!-- Profile Image -->
             <img
               src="/my.png"
+              srcset="/my.png 400w, /my_large.png 800w"
+              sizes="(max-width: 640px) 400px, 800px"
               alt="Ramizbhai Pinjara - Full Stack Developer and UI Specialist Portfolio"
               class="relative object-contain object-center hero-profile-image"
               style="width: auto; height: 18rem; max-width: 100%; background: transparent; z-index: 1; border: none; outline: none; box-shadow: none; display: block;"
               loading="eager"
               fetchpriority="high"
               decoding="async"
+              width="400"
+              height="600"
             />
             
             <!-- Top-Left Overlay: Hello, I'm Ramizbhai Pinjara -->

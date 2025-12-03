@@ -32,11 +32,15 @@ import { SOCIAL_LINKS } from '../utils/constants';
               <div class="order-2 lg:order-1 flex items-center justify-center">
                 <img
                   src="/contact.png"
+                  srcset="/contact.png 600w, /contact.png 1200w"
+                  sizes="(max-width: 1024px) 100vw, 600px"
                   alt="Contact Ramizbhai Pinjara - Full Stack Developer for web development projects and collaborations"
                   class="w-full h-auto rounded-xl object-cover"
                   style="border-radius: var(--radius-lg); max-width: 100%; height: auto;"
                   loading="lazy"
                   decoding="async"
+                  width="600"
+                  height="400"
                 />
               </div>
 
