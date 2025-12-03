@@ -1,0 +1,76 @@
+---
+interface Props {
+  skill: {
+    name: string;
+    level: number;
+  };
+}
+
+const { skill } = Astro.props;
+const gradientClass = skill.level >= 90 
+  ? 'from-green-500 to-emerald-500' 
+  : skill.level >= 80 
+  ? 'from-blue-500 to-cyan-500' 
+  : 'from-yellow-500 to-orange-500';
+---
+
+<div class="glass border hover:border-blue-500/50 transition-all duration-300 skill-badge h-full flex flex-col" style="border-color: var(--color-border); border-radius: var(--radius-lg); padding: var(--card-padding-sm); min-height: var(--height-skill-badge);">
+  <div class="flex items-center justify-between mb-4" style="margin-bottom: var(--spacing-2);">
+    <span class="text-slate-200 font-semibold" style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text-primary);">
+      {skill.name}
+    </span>
+    <span class="font-semibold text-blue-400" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold);">
+      {skill.level}%
+    </span>
+  </div>
+  
+  <div class="relative w-full bg-slate-800/40 rounded-full overflow-hidden mt-auto" style="height: 0.5rem; border-radius: var(--radius-sm);">
+    <div
+      class={`h-full rounded-full bg-gradient-to-r ${gradientClass} progress-bar relative overflow-hidden`}
+      data-level={skill.level}
+      style={`width: 0%; border-radius: var(--radius-sm);`}
+    >
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent shimmer-bar"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Animate progress bar on scroll into view
+  const skillBadge = document.currentScript?.parentElement;
+  if (skillBadge) {
+    const progressBar = skillBadge.querySelector('.progress-bar') as HTMLElement;
+    if (progressBar) {
+      const level = parseInt(progressBar.getAttribute('data-level') || '0');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && progressBar) {
+            setTimeout(() => {
+              progressBar.style.width = `${level}%`;
+            }, 200);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      observer.observe(skillBadge);
+    }
+  }
+</script>
+
+<style>
+  .progress-bar {
+    transition: width 1.5s var(--ease-out-expo);
+  }
+  
+  .shimmer-bar {
+    animation: shimmer 2s infinite;
+  }
+  
+  .skill-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+</style>
+

@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import projectsData from '../../content/projects.json';
+
+const allProjects = projectsData.sort((a, b) => b.year - a.year);
+const currentProject = projectsData.find(p => p.isCurrent);
+---
+
+<BaseLayout title="Projects" description="Portfolio of web development projects by Ramizbhai Pinjara">
+  <Header />
+  
+  <main class="pt-20 min-h-screen">
+    <section class="section-spacing">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+          <!-- Header -->
+          <div class="text-center reveal" style="margin-bottom: var(--spacing-8);">
+            <h1 class="font-bold mb-4 gradient-text" style="font-size: clamp(var(--font-size-4xl), 5vw, var(--font-size-h1)); margin-bottom: var(--spacing-3); font-weight: var(--font-weight-bold);">My Projects</h1>
+            <p class="text-slate-300 max-w-3xl mx-auto leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--spacing-4);">
+              A ted collection of real-world projects across <span class="text-blue-400 font-semibold">Frontend, Backend, Full-Stack, and IoT</span> showcasing my versatility and expertise in modern development.
+            </p>
+            <div class="w-24 h-1 bg-blue-400 mx-auto rounded-full" style="height: 0.25rem; border-radius: var(--radius-sm);"></div>
+          </div>
+
+          <!-- Current Work Section -->
+          {currentProject && (
+            <div class="mb-12 reveal" style="margin-bottom: var(--spacing-10);">
+              <div class="glass relative overflow-hidden" style="border-color: var(--color-border); border-radius: var(--radius-xl); padding: var(--card-padding-md);">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/8 rounded-full blur-3xl"></div>
+                <div class="relative z-10">
+                  <div class="text-center mb-4" style="margin-bottom: var(--spacing-3);">
+                    <h2 class="font-bold mb-3 gradient-text" style="font-size: clamp(var(--font-size-2xl), 3vw, var(--font-size-h3)); margin-bottom: var(--spacing-2); font-weight: var(--font-weight-bold);">Current Work</h2>
+                    <div class="w-16 h-0.5 bg-blue-400 mx-auto rounded-full" style="height: 0.125rem; border-radius: var(--radius-sm);"></div>
+                  </div>
+                  <div class="flex items-center justify-center flex-wrap mb-4" style="gap: var(--spacing-3); margin-bottom: var(--spacing-3);">
+                    <span class="bg-green-500/15 text-green-400 font-medium rounded-full border border-green-500/25" style="padding: var(--spacing-2) var(--spacing-2); font-size: var(--font-size-sm); border-radius: var(--radius-sm);">
+                      In Progress
+                    </span>
+                    <span class="text-slate-400" style="font-size: var(--font-size-sm); color: var(--color-text-muted);">Since {currentProject.year}</span>
+                  </div>
+                  <h3 class="font-bold text-blue-400 mb-3 text-center" style="font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-2xl)); margin-bottom: var(--spacing-2); font-weight: var(--font-weight-bold);">
+                    {currentProject.name}
+                  </h3>
+                  <p class="text-slate-300 mb-5 leading-relaxed max-w-3xl mx-auto text-center" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-4); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                    {currentProject.description}
+                  </p>
+                  <div class="flex flex-wrap justify-center mb-5" style="gap: var(--spacing-2); margin-bottom: var(--spacing-4);">
+                    {currentProject.technologies.slice(0, 8).map((tech) => (
+                      <span class="bg-slate-800/40 text-blue-400 rounded-lg border font-medium transition-colors hover:border-blue-500/50" style="border-color: var(--color-border); padding: var(--spacing-2) var(--spacing-3); font-size: var(--font-size-sm); border-radius: var(--radius-md);">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                  {currentProject.isCaseStudy && (
+                    <div class="text-center">
+                      <a
+                        href={`/projects/${currentProject.slug}`}
+                        class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white border transition-all hover:scale-105 hover:border-blue-400/50"
+                        style="padding: var(--spacing-2) var(--spacing-4); border-radius: var(--radius-lg); background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4); border-color: rgba(59, 130, 246, 0.3); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold);"
+                      >
+                        View Case Study
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 1.25rem; height: 1.25rem;">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <!-- Filters -->
+          <div class="flex flex-wrap justify-center reveal" style="gap: var(--spacing-2); margin-bottom: var(--spacing-6);">
+            <button
+              id="filter-all"
+              class="filter-btn bg-gradient-bg-accent text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              style="padding: var(--button-padding-y) var(--button-padding-x); border-radius: var(--radius-md); font-weight: var(--font-weight-semibold); font-size: var(--font-size-base);"
+              data-filter="all"
+            >
+              All Projects
+            </button>
+            <button
+              id="filter-case-studies"
+              class="filter-btn glass text-slate-300 font-semibold border border-slate-700/50 hover:border-blue-500/50 hover:scale-105 transition-all"
+              style="padding: var(--button-padding-y) var(--button-padding-x); border-radius: var(--radius-md); font-weight: var(--font-weight-semibold); font-size: var(--font-size-base); border-color: var(--color-border);"
+              data-filter="case-study"
+            >
+              Case Studies
+            </button>
+            <button
+              id="filter-current"
+              class="filter-btn glass text-slate-300 font-semibold border border-slate-700/50 hover:border-green-500/50 hover:scale-105 transition-all"
+              style="padding: var(--button-padding-y) var(--button-padding-x); border-radius: var(--radius-md); font-weight: var(--font-weight-semibold); font-size: var(--font-size-base); border-color: var(--color-border);"
+              data-filter="current"
+            >
+              Current
+            </button>
+          </div>
+          
+          <!-- Projects Grid -->
+          <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="gap: var(--spacing-card-gap);">
+            {allProjects.map((project, index) => (
+              <div
+                class="project-item reveal w-full"
+                data-type={project.isCaseStudy ? 'case-study' : project.isCurrent ? 'current' : 'regular'}
+                style={`transition-delay: ${(index % 6) * 50}ms`}
+              >
+                <ProjectCard project={project} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Project filtering functionality with animations
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const projectItems = document.querySelectorAll('.project-item');
+  
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const filter = button.getAttribute('data-filter');
+      
+      // Update active button
+      filterButtons.forEach((btn) => {
+        btn.classList.remove('bg-gradient-bg-accent', 'text-white', 'shadow-lg');
+        btn.classList.add('glass', 'text-slate-300');
+      });
+      button.classList.remove('glass', 'text-slate-300');
+      button.classList.add('bg-gradient-bg-accent', 'text-white', 'shadow-lg');
+      
+      // Filter projects with fade animation
+      projectItems.forEach((item, index) => {
+        const type = item.getAttribute('data-type');
+        if (filter === 'all' || type === filter) {
+          item.style.opacity = '0';
+          item.style.transform = 'translateY(20px)';
+          setTimeout(() => {
+            item.style.display = 'block';
+            setTimeout(() => {
+              item.style.opacity = '1';
+              item.style.transform = 'translateY(0)';
+            }, 10);
+          }, index * 30);
+        } else {
+          item.style.opacity = '0';
+          item.style.transform = 'translateY(-20px)';
+          setTimeout(() => {
+            item.style.display = 'none';
+          }, 300);
+        }
+      });
+    });
+  });
+
+  // Scroll reveal for projects
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible', 'revealed');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+

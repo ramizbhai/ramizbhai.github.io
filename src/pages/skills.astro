@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SkillBadge from '../components/SkillBadge.astro';
+import { SKILLS } from '../utils/constants';
+---
+
+<BaseLayout title="Skills" description="Technical skills and expertise of Ramizbhai Pinjara">
+  <Header />
+  
+  <main class="pt-20 min-h-screen">
+    <section class="section-spacing">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+          <div class="text-center reveal" style="margin-bottom: var(--spacing-8);">
+            <h1 class="font-bold mb-4 gradient-text" style="font-size: clamp(var(--font-size-4xl), 5vw, var(--font-size-h1)); margin-bottom: var(--spacing-3); font-weight: var(--font-weight-bold);">Skills & Expertise</h1>
+            <p class="text-slate-300 max-w-3xl mx-auto leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--spacing-4);">
+              A comprehensive overview of my technical skills and proficiency levels across frontend, 
+              backend, and development tools.
+            </p>
+            <div class="w-24 h-1 bg-blue-400 mx-auto rounded-full" style="height: 0.25rem; border-radius: var(--radius-sm);"></div>
+          </div>
+
+          <!-- Frontend Skills -->
+          <div class="reveal" style="margin-bottom: var(--spacing-section-sm);">
+            <h2 class="font-bold text-blue-400 text-center mb-6" style="font-size: clamp(var(--font-size-2xl), 3vw, var(--font-size-h3)); margin-bottom: var(--spacing-3); font-weight: var(--font-weight-bold);">Frontend Development</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="gap: var(--spacing-card-gap-sm);">
+              {SKILLS.frontend.map((skill, index) => (
+                <div style={`transition-delay: ${index * 50}ms`} class="reveal w-full">
+                  <SkillBadge skill={skill} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Backend Skills -->
+          <div class="reveal" style="margin-bottom: var(--spacing-section-sm);">
+            <h2 class="font-bold text-blue-400 text-center mb-6" style="font-size: clamp(var(--font-size-2xl), 3vw, var(--font-size-h3)); margin-bottom: var(--spacing-3); font-weight: var(--font-weight-bold);">Backend Development</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="gap: var(--spacing-card-gap-sm);">
+              {SKILLS.backend.map((skill, index) => (
+                <div style={`transition-delay: ${index * 50}ms`} class="reveal w-full">
+                  <SkillBadge skill={skill} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Tools & Technologies -->
+          <div class="reveal" style="margin-bottom: var(--spacing-section-sm);">
+            <h2 class="font-bold text-blue-400 text-center mb-6" style="font-size: clamp(var(--font-size-2xl), 3vw, var(--font-size-h3)); margin-bottom: var(--spacing-3); font-weight: var(--font-weight-bold);">Tools & Technologies</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="gap: var(--spacing-card-gap-sm);">
+              {SKILLS.tools.map((skill, index) => (
+                <div style={`transition-delay: ${index * 50}ms`} class="reveal w-full">
+                  <SkillBadge skill={skill} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Additional Skills -->
+          <div class="glass border reveal max-w-5xl mx-auto" style="border-color: var(--color-border); border-radius: var(--radius-xl); padding: var(--card-padding-md);">
+            <h2 class="font-bold text-blue-400 text-center mb-6" style="font-size: var(--font-size-h3); margin-bottom: var(--spacing-3); font-weight: var(--font-weight-bold);">Additional Expertise</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4" style="gap: var(--spacing-2);">
+              {[
+                'RESTful APIs',
+                'WebSocket',
+                'Responsive Design',
+                'Performance Optimization',
+                'Version Control',
+                'Agile Methodology',
+                'Code Review',
+                'Testing & Debugging',
+              ].map((skill) => (
+                <div class="text-center glass border hover:border-blue-500/50 transition-all hover:scale-105 w-full" style="border-color: var(--color-border); padding: var(--spacing-2); border-radius: var(--radius-lg);">
+                  <span class="text-slate-300 font-medium" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-secondary);">{skill}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Scroll reveal animation
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible', 'revealed');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+

@@ -1,0 +1,316 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Certificate from '../components/Certificate.astro';
+import certificatesData from '../content/certificates.json';
+import experienceData from '../content/experience.json';
+import { SITE_CONFIG } from '../utils/constants';
+---
+
+<BaseLayout title="About" description="Learn about Ramizbhai Pinjara's journey as a web developer">
+  <Header />
+  
+  <main class="pt-20 min-h-screen">
+    <!-- Hero Section -->
+    <section class="section-spacing">
+      <div class="container mx-auto">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center reveal" style="margin-bottom: var(--spacing-8);">
+            <h1 class="font-bold mb-4 gradient-text" style="font-size: clamp(var(--font-size-4xl), 5vw, var(--font-size-h1)); margin-bottom: var(--spacing-3); font-weight: var(--font-weight-bold);">About Me</h1>
+            <div class="w-24 h-1 bg-blue-400 mx-auto rounded-full" style="height: 0.25rem; border-radius: var(--radius-sm);"></div>
+          </div>
+          
+          <div class="glass reveal" style="border-color: var(--color-border); border-radius: var(--radius-xl); padding: var(--card-padding-md);">
+            <div style="display: flex; flex-direction: column; gap: var(--spacing-6);">
+              <!-- Introduction - Split Layout -->
+              <div id="about-intro-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center" style="display: grid; grid-template-columns: 1fr; gap: var(--spacing-4); align-items: center;">
+                <!-- Left Side: Text -->
+                <div class="order-2 lg:order-1" style="display: flex; flex-direction: column;">
+                  <h2 class="font-bold mb-4 text-blue-400" style="font-size: var(--font-size-h3); margin-bottom: var(--spacing-2); font-weight: var(--font-weight-bold); display: flex; align-items: center; gap: var(--spacing-2);">
+                    <span>👤</span>
+                    <span>Introduction</span>
+                  </h2>
+                  <p class="text-slate-300 leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                    My name is <strong class="text-blue-400 font-semibold">Ramizbhai Pinjara</strong>, and I am a passionate <strong class="text-blue-400 font-semibold">Full Stack Developer</strong> with <strong class="text-blue-400 font-semibold">4+ years</strong> of experience. My specialization lies in building fast, user-friendly, and <strong class="text-blue-400 font-semibold">SEO-optimized</strong> web applications. I take projects from concept to final delivery, ensuring clean and scalable engineering throughout the process.
+                  </p>
+                </div>
+                <!-- Right Side: Image -->
+                <div class="order-1 lg:order-2 flex items-center justify-center" style="display: flex; align-items: center; justify-content: center;">
+                  <img
+                    src="/about.png"
+                    alt="Ramizbhai Pinjara - Full Stack Developer with 4+ years of experience in web development"
+                    class="h-auto rounded-xl object-cover"
+                    style="border-radius: var(--radius-lg); max-width: 70%; height: auto; width: 70%;"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+
+              <!-- Technical Expertise -->
+              <div>
+                <h2 class="font-bold mb-4 text-blue-400" style="font-size: var(--font-size-h3); margin-bottom: var(--spacing-2); font-weight: var(--font-weight-bold); display: flex; align-items: center; gap: var(--spacing-2);">
+                  <span>💻</span>
+                  <span>Technical Expertise</span>
+                </h2>
+                <p class="text-slate-300 leading-relaxed mb-4" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--spacing-2);">
+                  I leverage modern frameworks and technologies to craft both slick UIs and robust backend systems:
+                </p>
+                <div class="glass border rounded-lg overflow-hidden" style="border-color: var(--color-border); border-radius: var(--radius-lg);">
+                  <table class="w-full" style="border-collapse: collapse;">
+                    <thead>
+                      <tr class="bg-slate-800/40">
+                        <th class="text-left p-4 font-semibold text-blue-400" style="padding: var(--spacing-2); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); border-bottom: 1px solid var(--color-border);">Area</th>
+                        <th class="text-left p-4 font-semibold text-blue-400" style="padding: var(--spacing-2); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); border-bottom: 1px solid var(--color-border);">Skills</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="border-b" style="border-bottom: 1px solid var(--color-border);">
+                        <td class="p-4 font-semibold text-slate-300" style="padding: var(--spacing-2); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text-secondary);">Front-End Development</td>
+                        <td class="p-4 text-slate-300 leading-relaxed" style="padding: var(--spacing-2); font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                          I design smooth and modern UIs using React.js, <strong class="text-blue-400">Next.js</strong>, Tailwind CSS, and shadcn/ui. I bring rich and engaging interactions to life with Framer Motion.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="p-4 font-semibold text-slate-300" style="padding: var(--spacing-2); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text-secondary);">Full Stack & Back-End</td>
+                        <td class="p-4 text-slate-300 leading-relaxed" style="padding: var(--spacing-2); font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                          I possess strong Full Stack skills in JavaScript, <strong class="text-blue-400">TypeScript</strong>, Node.js, and Express. For databases, I work with MongoDB and <strong class="text-blue-400">MySQL</strong>, allowing me to build fully functional applications.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Work Philosophy -->
+              <div>
+                <h2 class="font-bold mb-4 text-blue-400" style="font-size: var(--font-size-h3); margin-bottom: var(--spacing-2); font-weight: var(--font-weight-bold); display: flex; align-items: center; gap: var(--spacing-2);">
+                  <span>🚀</span>
+                  <span>Work Philosophy</span>
+                </h2>
+                <p class="text-slate-300 leading-relaxed mb-4" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--spacing-2);">
+                  I also work as a freelancer, helping clients deliver <strong class="text-blue-400 font-semibold">high-performance and impactful digital products</strong>.
+                </p>
+                <ul class="list-none space-y-3" style="list-style: none; display: flex; flex-direction: column; gap: var(--spacing-2);">
+                  <li class="flex items-start gap-3">
+                    <span class="text-blue-400 font-bold flex-shrink-0" style="font-size: var(--font-size-lg);">•</span>
+                    <span class="text-slate-300 leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                      <strong class="text-blue-400 font-semibold">Problem-Solving:</strong> I truly enjoy taking on challenging projects and finding <strong class="text-blue-400 font-semibold">smart solutions</strong> for tough problems.
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="text-blue-400 font-bold flex-shrink-0" style="font-size: var(--font-size-lg);">•</span>
+                    <span class="text-slate-300 leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                      <strong class="text-blue-400 font-semibold">Readiness:</strong> I am always ready for new ideas, complex tasks, or any challenging project thrown my way.
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="text-blue-400 font-bold flex-shrink-0" style="font-size: var(--font-size-lg);">•</span>
+                    <span class="text-slate-300 leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                      <strong class="text-blue-400 font-semibold">Eagerness to Learn:</strong> I am constantly eager to learn, experiment, and grow professionally, and excited to collaborate on meaningful products.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Current Experimentation -->
+              <div>
+                <h2 class="font-bold mb-4 text-blue-400" style="font-size: var(--font-size-h3); margin-bottom: var(--spacing-2); font-weight: var(--font-weight-bold); display: flex; align-items: center; gap: var(--spacing-2);">
+                  <span>💡</span>
+                  <span>Current Experimentation</span>
+                </h2>
+                <p class="text-slate-300 leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                  I am currently building my own <strong class="text-blue-400 font-semibold">Smart Home Automation</strong> project. Through this, I am experimenting with modern technologies to create intelligent and connected systems.
+                </p>
+              </div>
+
+              <!-- Personal Interests -->
+              <div>
+                <h2 class="font-bold mb-4 text-blue-400" style="font-size: var(--font-size-h3); margin-bottom: var(--spacing-2); font-weight: var(--font-weight-bold); display: flex; align-items: center; gap: var(--spacing-2);">
+                  <span>☕</span>
+                  <span>Personal Interests</span>
+                </h2>
+                <p class="text-slate-300 leading-relaxed mb-4" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--spacing-2);">
+                  When I'm not coding, I pursue activities that help me relax and refresh my mind:
+                </p>
+                <ul class="list-none space-y-3" style="list-style: none; display: flex; flex-direction: column; gap: var(--spacing-2);">
+                  <li class="flex items-start gap-3">
+                    <span class="text-blue-400 font-bold flex-shrink-0" style="font-size: var(--font-size-lg);">•</span>
+                    <span class="text-slate-300 leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                      Enjoying a good cup of <strong class="text-blue-400 font-semibold">Tea</strong> (though coffee is rapidly becoming a habit).
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="text-blue-400 font-bold flex-shrink-0" style="font-size: var(--font-size-lg);">•</span>
+                    <span class="text-slate-300 leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                      Going on long drives to relax and refresh my mind.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Timeline -->
+    <section class="section-spacing relative bg-gradient-to-b from-transparent to-slate-950/50">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-16 reveal">
+            <h2 class="text-4xl md:text-5xl font-bold mb-5 gradient-text" style="font-size: clamp(var(--font-size-3xl), 4vw, var(--font-size-h1)); margin-bottom: var(--spacing-3); font-weight: var(--font-weight-bold);">Professional Experience</h2>
+            <div class="w-24 h-1 bg-blue-400 mx-auto rounded-full" style="height: 0.25rem; border-radius: var(--radius-sm);"></div>
+          </div>
+          <div class="space-y-8 max-w-4xl mx-auto">
+            {experienceData.map((exp, index) => (
+              <div class={`relative reveal ${index < experienceData.length - 1 ? 'pb-12' : ''}`} style={`transition-delay: ${index * 100}ms`}>
+                {index < experienceData.length - 1 && (
+                  <div class="absolute left-8 top-20 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-cyan-500 to-slate-700/50" style="left: 2rem; top: 5rem;"></div>
+                )}
+                <div class="flex gap-6">
+                  <div class="flex-shrink-0">
+                    <div class={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg transition-all hover:scale-110 ${
+                      exp.isCurrent ? 'bg-gradient-to-br from-blue-500 via-cyan-500 to-purple-500 border-2 border-blue-400/50' : 'glass border border-slate-700/50 hover:border-blue-500/50'
+                    }`} style="width: 4rem; height: 4rem; border-radius: var(--radius-xl);">
+                      <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 2rem; height: 2rem;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="flex-1 glass rounded-2xl p-6 md:p-8 border hover:border-blue-500/50 transition-all card-hover relative overflow-hidden group" style="border-color: var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-4) var(--spacing-6);">
+                    {/* Gradient overlay on hover */}
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                    
+                    <div class="relative z-10">
+                      <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                        <h3 class="text-2xl font-bold gradient-text" style="font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-2xl)); font-weight: var(--font-weight-bold);">{exp.title}</h3>
+                        {exp.isCurrent && (
+                          <span class="px-3 py-1.5 text-xs font-semibold bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 rounded-full border border-green-500/30 animate-pulse" style="padding: var(--spacing-1) var(--spacing-2); border-radius: var(--radius-full); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold);">
+                            Current
+                          </span>
+                        )}
+                      </div>
+                      <p class="text-slate-300 font-semibold text-lg mb-1" style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); color: var(--color-text-secondary);">{exp.company}</p>
+                      <p class="text-slate-400 text-sm mb-4" style="font-size: var(--font-size-sm); color: var(--color-text-muted);">{exp.location} • {exp.period}</p>
+                      <p class="text-slate-300 mb-6 leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--spacing-4);">{exp.description}</p>
+                      <div class="mb-6" style="margin-bottom: var(--spacing-4);">
+                        <h4 class="text-sm font-semibold text-blue-400 mb-3 uppercase tracking-wide" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-2); letter-spacing: 0.05em;">Key Achievements:</h4>
+                        <ul class="list-disc list-inside space-y-2 text-slate-300 text-sm md:text-base" style="list-style: disc; list-style-position: inside; display: flex; flex-direction: column; gap: var(--spacing-1);">
+                          {exp.achievements.map((achievement) => (
+                            <li class="leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">{achievement}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-700/50" style="padding-top: var(--spacing-3); border-top: 1px solid rgba(148, 163, 184, 0.2); gap: var(--spacing-2);">
+                        {exp.technologies.map((tech) => (
+                          <span class="tech-button px-4 py-2 text-sm font-medium text-blue-400 rounded-lg transition-all hover:scale-105" style="padding: var(--spacing-2) var(--spacing-3); border-radius: var(--radius-lg); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Certificates -->
+    <section class="section-spacing">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center mb-16 reveal">
+            <h2 class="text-4xl md:text-5xl font-bold mb-5 gradient-text">Certifications</h2>
+            <div class="w-24 h-1 bg-blue-400 mx-auto rounded-full"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+            {certificatesData.map((certificate, index) => (
+              <div class="reveal w-full max-w-lg" style={`transition-delay: ${index * 100}ms`}>
+                <Certificate certificate={certificate} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* Responsive grid for introduction section */
+  @media (min-width: 1024px) {
+    #about-intro-grid {
+      grid-template-columns: 1fr 1fr !important;
+    }
+  }
+
+  /* Technology button styles with gradient border */
+  .tech-button {
+    position: relative;
+    background: rgba(26, 31, 40, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid transparent;
+    cursor: default;
+    isolation: isolate;
+  }
+
+  /* Gradient border using pseudo-element */
+  .tech-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 1.5px;
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.6), rgba(34, 211, 238, 0.6), rgba(167, 139, 250, 0.6));
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    z-index: -1;
+    transition: all 0.3s ease;
+  }
+
+  .tech-button:hover {
+    background: rgba(59, 130, 246, 0.25);
+    box-shadow: 
+      0 4px 16px rgba(96, 165, 250, 0.4), 
+      0 0 24px rgba(34, 211, 238, 0.3),
+      inset 0 0 20px rgba(167, 139, 250, 0.15);
+    transform: translateY(-2px) scale(1.02);
+    color: var(--color-cyan-blue-bright);
+  }
+
+  .tech-button:hover::before {
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.9), rgba(34, 211, 238, 0.9), rgba(167, 139, 250, 0.9));
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.6);
+  }
+</style>
+
+<script>
+  // Scroll reveal animation
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible', 'revealed');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+

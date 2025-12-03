@@ -1,0 +1,46 @@
+---
+interface Props {
+  certificate: {
+    id: number;
+    title: string;
+    issuer: string;
+    date: string;
+    description: string;
+    credentialId?: string;
+  };
+}
+
+const { certificate } = Astro.props;
+---
+
+<div class="glass border hover:border-blue-500/50 transition-all duration-300 card-hover h-full flex flex-col min-h-[300px]" style="border-color: var(--color-border); border-radius: var(--radius-lg); padding: var(--card-padding-sm); min-height: 300px;">
+  <div class="flex items-start justify-between mb-4" style="margin-bottom: var(--spacing-2);">
+    <div class="flex-1">
+      <h3 class="font-semibold text-blue-400 mb-2" style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-2);">
+        {certificate.title}
+      </h3>
+      <p class="font-medium mb-1" style="font-size: var(--font-size-base); font-weight: var(--font-weight-medium); color: var(--color-text-secondary); margin-bottom: var(--spacing-1);">
+        {certificate.issuer}
+      </p>
+      <p class="text-slate-400" style="font-size: var(--font-size-sm); color: var(--color-text-muted);">
+        {certificate.date}
+      </p>
+    </div>
+    <div class="ml-4 flex-shrink-0" style="margin-left: var(--spacing-2);">
+      <svg class="w-12 h-12 text-blue-400/40" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 3rem; height: 3rem;">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+      </svg>
+    </div>
+  </div>
+  
+  <p class="text-slate-300 mb-4 leading-relaxed flex-grow" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-2); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+    {certificate.description}
+  </p>
+  
+  {certificate.credentialId && (
+    <p class="text-xs text-slate-500 font-mono mt-auto" style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: auto;">
+      ID: {certificate.credentialId}
+    </p>
+  )}
+</div>
+

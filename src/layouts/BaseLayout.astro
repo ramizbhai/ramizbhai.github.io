@@ -1,0 +1,74 @@
+---
+import '../styles/global.css';
+import { SITE_CONFIG, SOCIAL_LINKS } from '../utils/constants';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = SITE_CONFIG.title, description = SITE_CONFIG.description } = Astro.props;
+// Primary keyword integration: Always include name for brand identity
+const fullTitle = title === SITE_CONFIG.title 
+  ? `${SITE_CONFIG.name} | Full Stack Developer` 
+  : `${title} | ${SITE_CONFIG.name}`;
+
+// Canonical URL construction
+const canonicalUrl = new URL(Astro.url.pathname, SITE_CONFIG.url).toString();
+
+// Default OG image (absolute URL)
+const ogImage = `${SITE_CONFIG.url}/my.png`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE_CONFIG.author} />
+    
+    <!-- SEO: Robots Meta Tag -->
+    <meta name="robots" content="index, follow" />
+    
+    <!-- SEO: Canonical URL -->
+    <link rel="canonical" href={canonicalUrl} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE_CONFIG.name} - Full Stack Developer Portfolio`} />
+    <meta property="og:site_name" content={SITE_CONFIG.name} />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={`${SITE_CONFIG.name} - Full Stack Developer Portfolio`} />
+    {SOCIAL_LINKS.twitter && (
+      <meta name="twitter:creator" content={SOCIAL_LINKS.twitter} />
+    )}
+    
+    <!-- Performance: Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/my.png" />
+    <link rel="shortcut icon" type="image/png" href="/my.png" />
+    <link rel="apple-touch-icon" href="/my.png" />
+    <title>{fullTitle}</title>
+    <slot name="head" />
+  </head>
+  <body class="bg-slate-900 text-slate-100 min-h-screen">
+    <slot />
+  </body>
+</html>
+

@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "title": "Web Development Fundamentals",
+    "issuer": "TechSkills Academy",
+    "date": "March 2021",
+    "description": "Comprehensive certification covering HTML5, CSS3, and JavaScript fundamentals, responsive design principles, and modern web development practices.",
+    "image": "/images/certificates/web-dev-fundamentals.jpg",
+    "credentialId": "TSA-WD-2021-0342"
+  },
+  {
+    "id": 2,
+    "title": "Python Programming for Web Development",
+    "issuer": "CodeMaster Institute",
+    "date": "June 2021",
+    "description": "Advanced Python certification focusing on web frameworks, REST API development, database integration, and backend architecture patterns.",
+    "image": "/images/certificates/python-web-dev.jpg",
+    "credentialId": "CMI-PWD-2021-0891"
+  },
+  {
+    "id": 3,
+    "title": "Responsive Web Design Specialist",
+    "issuer": "Digital Design Academy",
+    "date": "August 2021",
+    "description": "Specialized certification in creating responsive, mobile-first web designs using modern CSS techniques, Flexbox, Grid, and media queries.",
+    "image": "/images/certificates/responsive-design.jpg",
+    "credentialId": "DDA-RWD-2021-1256"
+  },
+  {
+    "id": 4,
+    "title": "AWS Cloud Practitioner",
+    "issuer": "Amazon Web Services",
+    "date": "October 2021",
+    "description": "AWS certification demonstrating foundational knowledge of cloud computing concepts, AWS services, and cloud architecture best practices.",
+    "image": "/images/certificates/aws-practitioner.jpg",
+    "credentialId": "AWS-CP-2021-4521"
+  },
+  {
+    "id": 5,
+    "title": "JavaScript Advanced Concepts",
+    "issuer": "Modern Web Technologies",
+    "date": "December 2021",
+    "description": "Advanced JavaScript certification covering ES6+ features, asynchronous programming, DOM manipulation, and modern JavaScript frameworks.",
+    "image": "/images/certificates/js-advanced.jpg",
+    "credentialId": "MWT-JS-2021-2789"
+  }
+]
+

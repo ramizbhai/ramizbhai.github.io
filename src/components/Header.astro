@@ -1,0 +1,397 @@
+---
+import { NAVIGATION } from '../utils/constants';
+const currentPath = Astro.url.pathname;
+---
+
+<header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent" style="height: var(--height-header);">
+  <nav class="container mx-auto" style="padding-left: var(--spacing-2); padding-right: var(--spacing-2);">
+    <div class="flex items-center justify-between" style="height: var(--height-header);">
+
+      <!-- Logo -->
+      <a href="/" class="text-xl md:text-2xl font-bold gradient-text hover:opacity-90 transition-opacity">
+        ᖇᗩᗰIᘔ
+      </a>
+
+      <!-- Desktop Navigation -->
+      <ul class="hidden lg:flex items-center" style="gap: var(--spacing-nav-gap);">
+        {NAVIGATION.map((item) => {
+          const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+
+          return (
+            <li>
+              <a
+                href={item.href}
+                class={`relative px-4 py-3 font-semibold transition-all nav-link ${
+                  isActive ? 'text-blue-400' : 'text-slate-300 hover:text-blue-400'
+                }`}
+                style="padding: var(--spacing-2) var(--spacing-2); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); transition: all var(--transition-base) var(--ease-out-expo);"
+                data-section={item.href === '/' ? 'home' : item.href.replace('/', '')}
+              >
+                {item.name}
+                <span class="nav-underline absolute bottom-2 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full transition-all" style="transition: all var(--transition-base) var(--ease-out-expo);"></span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button"
+        class="lg:hidden text-slate-300 hover:text-blue-400 rounded-lg hover:bg-slate-800/50 transition-all"
+        style="padding: var(--spacing-2); border-radius: var(--radius-sm); min-height: var(--height-button); min-width: var(--height-button);"
+      >
+        <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden lg:hidden glass border" style="margin-top: var(--spacing-2); padding-bottom: var(--spacing-2); border-radius: var(--radius-lg); padding: var(--spacing-2); border-color: var(--color-border); opacity: 0; transform: translateY(-10px); transition: opacity var(--transition-base) var(--ease-out-expo), transform var(--transition-base) var(--ease-out-expo);">
+      <ul class="flex flex-col" style="gap: var(--spacing-2);">
+        {NAVIGATION.map((item) => {
+          const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+          return (
+            <li>
+              <a
+                href={item.href}
+                class={`mobile-nav-link flex items-center font-semibold transition-all ${
+                  isActive
+                    ? 'text-blue-400 bg-blue-500/15 border-l-4 border-blue-400'
+                    : 'text-slate-300 hover:text-blue-400 hover:bg-slate-800/40'
+                }`}
+                style="padding: var(--spacing-3) var(--spacing-4); border-radius: var(--radius-md); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); min-height: var(--height-button);"
+                data-section={item.href === '/' ? 'home' : item.href.replace('/', '')}
+              >
+                {item.name}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const header = document.getElementById('header');
+  const menuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
+  const closeIcon = document.getElementById('close-icon');
+
+  // Header scroll background with throttling
+  let ticking = false;
+  function updateHeaderOnScroll() {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const y = window.scrollY;
+
+        if (y > 10) {
+          header.style.background = "rgba(13,17,23,0.65)";
+          header.style.backdropFilter = "blur(20px) saturate(180%)";
+          header.style.webkitBackdropFilter = "blur(20px) saturate(180%)";
+          header.style.borderBottom = "1px solid rgba(255,255,255,0.08)";
+        } else {
+          header.style.background = "transparent";
+          header.style.backdropFilter = "none";
+          header.style.webkitBackdropFilter = "none";
+          header.style.borderBottom = "none";
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  updateHeaderOnScroll();
+  window.addEventListener("scroll", updateHeaderOnScroll, { passive: true });
+
+  // Enhanced Mobile toggle with smooth animations
+  menuButton.addEventListener('click', () => {
+    const isHidden = mobileMenu.classList.contains('hidden');
+    
+    if (isHidden) {
+      mobileMenu.classList.remove('hidden');
+      // Trigger reflow to ensure transition
+      mobileMenu.offsetHeight;
+      requestAnimationFrame(() => {
+        mobileMenu.style.opacity = '1';
+        mobileMenu.style.transform = 'translateY(0)';
+      });
+    } else {
+      mobileMenu.style.opacity = '0';
+      mobileMenu.style.transform = 'translateY(-10px)';
+      setTimeout(() => {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.style.opacity = '';
+        mobileMenu.style.transform = '';
+      }, 300);
+    }
+    
+    menuIcon.classList.toggle('hidden');
+    closeIcon.classList.toggle('hidden');
+  });
+
+  // Smooth Scroll (only homepage)
+  const isHome = location.pathname === '/' || location.pathname.endsWith('/');
+  if (isHome) {
+    document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
+      const section = link.dataset.section;
+      if (!section) return;
+
+      // Get the original href from Astro (before any JS modifications)
+      const originalHref = link.getAttribute('href');
+      
+      // Always navigate to separate pages (like /contact) instead of scrolling to sections
+      // Only convert links that should scroll to sections on the homepage
+      if (originalHref === '/contact') {
+        // Contact should always navigate to the Contact page, not scroll to section
+        return;
+      }
+      
+      // Only convert to hash link if the section exists on the homepage
+      const target = document.getElementById(section);
+      if (!target) {
+        // Section doesn't exist, keep original href for navigation to separate page
+        return;
+      }
+
+      // Store original href for fallback
+      const storedHref = link.getAttribute('data-original-href') || originalHref;
+      if (!link.hasAttribute('data-original-href')) {
+        link.setAttribute('data-original-href', storedHref);
+      }
+
+      // Convert to hash link for smooth scrolling
+      link.href = `#${section}`;
+
+      link.addEventListener('click', e => {
+        e.preventDefault();
+
+        const targetElement = document.getElementById(section);
+        if (!targetElement) {
+          // Fallback: navigate to original href if section not found
+          window.location.href = storedHref;
+          return;
+        }
+
+        const offset = header.offsetHeight;
+        const top = targetElement.offsetTop - offset + 1;
+
+        window.scrollTo({ top, behavior: 'smooth' });
+        
+        // Close mobile menu with animation
+        mobileMenu.style.opacity = '0';
+        mobileMenu.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+          mobileMenu.classList.add('hidden');
+          mobileMenu.style.opacity = '';
+          mobileMenu.style.transform = '';
+        }, 300);
+        menuIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+      });
+    });
+
+    // Active Section Detection using Intersection Observer
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+    
+    if (sections.length > 0 && navLinks.length > 0) {
+      // Function to update active nav link
+      function updateActiveNav(activeId) {
+        navLinks.forEach(link => {
+          const linkSection = link.dataset.section;
+          const underline = link.querySelector('.nav-underline');
+          
+          if (linkSection === activeId) {
+            link.classList.add('text-blue-400');
+            link.classList.remove('text-slate-300');
+            if (underline) {
+              underline.classList.add('w-10');
+              underline.classList.remove('w-0');
+            }
+          } else {
+            link.classList.remove('text-blue-400');
+            link.classList.add('text-slate-300');
+            if (underline) {
+              underline.classList.remove('w-10');
+              underline.classList.add('w-0');
+            }
+          }
+        });
+      }
+
+      // Track previous active section to prevent flickering
+      let previousActiveSection = null;
+      
+      // Improved function to determine active section based on viewport position
+      function getActiveSection() {
+        const headerHeight = header.offsetHeight;
+        const scrollPos = window.scrollY;
+        const triggerPoint = scrollPos + headerHeight + 150; // Trigger point below header
+        
+        let activeSection = null;
+        let closestDistance = Infinity;
+        
+        // Find the section whose top is closest to (but not past) the trigger point
+        sections.forEach(section => {
+          const rect = section.getBoundingClientRect();
+          const sectionTop = rect.top + scrollPos;
+          const sectionBottom = sectionTop + rect.height;
+          
+          // Check if trigger point is within this section
+          if (triggerPoint >= sectionTop && triggerPoint < sectionBottom) {
+            const distance = Math.abs(triggerPoint - sectionTop);
+            if (distance < closestDistance) {
+              closestDistance = distance;
+              activeSection = section;
+            }
+          }
+        });
+        
+        // If no section contains the trigger point, find the one we just passed
+        if (!activeSection) {
+          sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const sectionTop = rect.top + scrollPos;
+            const sectionBottom = sectionTop + rect.height;
+            
+            // If we're past the section's top but before its bottom
+            if (triggerPoint >= sectionTop && triggerPoint < sectionBottom + 200) {
+              const distance = triggerPoint - sectionTop;
+              if (distance < closestDistance && distance >= 0) {
+                closestDistance = distance;
+                activeSection = section;
+              }
+            }
+          });
+        }
+        
+        // Prevent switching back to home section unless we're actually at the top
+        if (activeSection && activeSection.id === 'home' && scrollPos > window.innerHeight * 0.5) {
+          // If we've scrolled past half the viewport, don't highlight home
+          // Find the next section instead
+          const homeRect = activeSection.getBoundingClientRect();
+          const homeBottom = homeRect.top + scrollPos + homeRect.height;
+          
+          if (triggerPoint > homeBottom) {
+            // Find the section we're actually in
+            sections.forEach(section => {
+              if (section.id === 'home') return;
+              
+              const rect = section.getBoundingClientRect();
+              const sectionTop = rect.top + scrollPos;
+              const sectionBottom = sectionTop + rect.height;
+              
+              if (triggerPoint >= sectionTop && triggerPoint < sectionBottom) {
+                activeSection = section;
+              }
+            });
+          }
+        }
+        
+        return activeSection;
+      }
+
+      // Update active section on scroll
+      let ticking = false;
+      function updateActiveOnScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const activeSection = getActiveSection();
+            if (activeSection) {
+              updateActiveNav(activeSection.id);
+            }
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+
+      // Set initial state
+      const initialActive = getActiveSection();
+      if (initialActive) {
+        updateActiveNav(initialActive.id);
+      }
+
+      // Listen to scroll events
+      window.addEventListener('scroll', updateActiveOnScroll, { passive: true });
+      
+      // Use Intersection Observer as a secondary check (less aggressive)
+      const observerOptions = {
+        root: null,
+        rootMargin: `-${header.offsetHeight + 100}px 0px -40% 0px`,
+        threshold: [0, 0.2, 0.4, 0.6, 0.8, 1]
+      };
+
+      const sectionObserver = new IntersectionObserver((entries) => {
+        // Only update if scroll-based detection hasn't run recently
+        // This prevents conflicts between the two methods
+        const timeSinceLastScroll = Date.now() - (window.lastScrollUpdate || 0);
+        if (timeSinceLastScroll < 150) {
+          return; // Skip if scroll handler just ran
+        }
+        
+        // Find section with highest intersection ratio in upper viewport
+        let bestSection = null;
+        let bestRatio = 0;
+        
+        entries.forEach(entry => {
+          const rect = entry.boundingClientRect;
+          const headerHeight = header.offsetHeight;
+          const isInUpperViewport = rect.top < headerHeight + window.innerHeight * 0.5;
+          
+          // Require significant visibility (at least 20%) and be in upper viewport
+          if (entry.intersectionRatio > bestRatio && entry.intersectionRatio > 0.2 && isInUpperViewport) {
+            // Don't select home section if we've scrolled past it significantly
+            if (entry.target.id === 'home' && window.scrollY > window.innerHeight * 0.7) {
+              return;
+            }
+            
+            bestRatio = entry.intersectionRatio;
+            bestSection = entry.target;
+          }
+        });
+        
+        // Only update if we found a good match and it's different from current
+        if (bestSection && bestRatio > 0.2) {
+          const currentActive = navLinks.find(link => link.classList.contains('text-blue-400'));
+          const currentSection = currentActive?.dataset.section;
+          
+          if (currentSection !== bestSection.id) {
+            updateActiveNav(bestSection.id);
+          }
+        }
+      }, observerOptions);
+
+      // Observe all sections
+      sections.forEach(section => {
+        sectionObserver.observe(section);
+      });
+      
+      // Track scroll updates
+      const originalUpdateActive = updateActiveOnScroll;
+      updateActiveOnScroll = function() {
+        window.lastScrollUpdate = Date.now();
+        originalUpdateActive();
+      };
+    }
+  } else {
+    // Not on homepage - ensure all links work normally for page navigation
+    document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
+      // Remove any hash links that might have been set
+      const originalHref = link.getAttribute('data-original-href');
+      if (originalHref && !originalHref.startsWith('#')) {
+        link.href = originalHref;
+      }
+    });
+  }
+});
+</script>

@@ -1,0 +1,533 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import projectsData from '../../content/projects.json';
+
+export async function getStaticPaths() {
+  const caseStudies = projectsData.filter(p => p.isCaseStudy);
+  
+  return caseStudies.map((project) => {
+    if (!project || !project.slug) {
+      console.error('Invalid project data:', project);
+      return null;
+    }
+    // Ensure all required fields exist before passing to props
+    const projectWithDefaults = {
+      ...project,
+      name: project.name || 'Untitled Project',
+      description: project.description || 'No description available',
+      technologies: project.technologies || [],
+      contribution: project.contribution || 'No contribution details available.',
+    };
+    return {
+      params: { slug: project.slug },
+      props: { project: projectWithDefaults },
+    };
+  }).filter(Boolean);
+}
+
+interface Props {
+  project: typeof projectsData[0];
+}
+
+const { project } = Astro.props;
+
+// Safety check - ensure project data exists
+// getStaticPaths should always provide valid projects, but add safety check
+if (!project) {
+  console.error('Project data is missing for slug:', Astro.params.slug);
+  // Fallback: redirect to projects page if data is completely missing
+  return Astro.redirect('/projects');
+}
+
+// Find the framework used in this project (after safety check)
+const framework = project?.technologies?.find((t: string) => ['Django', 'Flask', 'FastAPI'].includes(t)) || 'a modern framework';
+
+// Ensure required fields exist - use safe defaults
+const projectName = project?.name || 'Project';
+const projectDescription = project?.description || 'No description available';
+const projectTechnologies = project?.technologies || [];
+const projectContribution = project?.contribution || 'No contribution details available.';
+const projectYear = project?.year;
+const projectRegion = project?.region;
+const projectCountry = project?.country;
+const isSmartHome = project?.slug === 'smart-home-automation';
+---
+
+<BaseLayout title={projectName} description={projectDescription}>
+  <Header />
+  
+  <main class="pt-20 min-h-screen" style="padding-top: var(--height-header); display: block; visibility: visible; opacity: 1;">
+    <article class="container mx-auto px-4 sm:px-6 lg:px-8" style="padding-top: var(--spacing-section-md); padding-bottom: var(--spacing-section-md); display: block; visibility: visible; opacity: 1;">
+      <div class="max-w-5xl mx-auto" style="display: block; visibility: visible; opacity: 1;">
+        <!-- Back Button - Enhanced -->
+        <a
+          href="/projects"
+          class="inline-flex items-center gap-2 mb-8 group transition-all hover:translate-x-[-4px]"
+          style="margin-bottom: var(--spacing-6);"
+        >
+          <div class="flex items-center justify-center w-10 h-10 rounded-lg border transition-all group-hover:border-blue-400/50 group-hover:bg-blue-500/10"
+            style="width: 2.5rem; height: 2.5rem; border-radius: var(--radius-md); border-color: var(--color-border);">
+            <svg class="w-5 h-5 text-blue-400 transition-transform group-hover:translate-x-[-2px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 1.25rem; height: 1.25rem;">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </div>
+          <span class="text-blue-400 font-medium group-hover:text-blue-300 transition-colors" style="font-size: var(--font-size-base); font-weight: var(--font-weight-medium);">
+            Back to Projects
+          </span>
+        </a>
+
+        <!-- Header - Enhanced -->
+        <header class="mb-16 text-center reveal" style="margin-bottom: var(--spacing-10);">
+          <div class="flex items-center justify-center gap-3 mb-8 flex-wrap" style="gap: var(--spacing-2); margin-bottom: var(--spacing-6);">
+            {projectRegion && projectCountry && (
+              <span class="px-4 py-2 glass rounded-full border font-medium transition-all hover:scale-105" 
+                style="padding: var(--spacing-2) var(--spacing-3); border-color: var(--color-border); border-radius: var(--radius-full); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-secondary);">
+                {projectRegion} • {projectCountry}
+              </span>
+            )}
+            {projectYear && (
+              <span class="px-4 py-2 rounded-full border font-medium transition-all hover:scale-105"
+                style="padding: var(--spacing-2) var(--spacing-3); border-radius: var(--radius-full); background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.25); color: var(--color-primary); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);">
+                {projectYear}
+              </span>
+            )}
+          </div>
+          <h1 class="font-bold mb-6 gradient-text leading-tight" 
+            style="font-size: clamp(var(--font-size-3xl), 5vw, var(--font-size-6xl)); margin-bottom: var(--spacing-4); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight);">
+            {projectName}
+          </h1>
+          <p class="leading-relaxed max-w-3xl mx-auto" 
+            style="font-size: clamp(var(--font-size-lg), 2vw, var(--font-size-2xl)); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+            {projectDescription}
+          </p>
+        </header>
+
+        <!-- Technologies - Enhanced -->
+        <div class="mb-16 text-center reveal" style="margin-bottom: var(--spacing-10);">
+          <h2 class="font-semibold mb-8 gradient-text" 
+            style="font-size: clamp(var(--font-size-2xl), 3vw, var(--font-size-3xl)); margin-bottom: var(--spacing-6); font-weight: var(--font-weight-semibold);">
+            Technologies Used
+          </h2>
+          <div class="flex flex-wrap gap-3 justify-center" style="gap: var(--spacing-2);">
+            {projectTechnologies.map((tech) => (
+              <span class="px-4 py-2.5 glass rounded-xl border font-medium transition-all hover:scale-105 hover:border-blue-400/50" 
+                style="padding: var(--spacing-2) var(--spacing-3); border-color: var(--color-border); border-radius: var(--radius-lg); color: var(--color-primary); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <!-- Case Study Sections - Enhanced -->
+        <div class="space-y-8" style="display: flex; flex-direction: column; gap: var(--spacing-6);">
+          {isSmartHome ? (
+            <>
+              <!-- Project Overview -->
+              <section class="glass rounded-3xl border reveal transition-all hover:border-blue-400/30 hover:transform hover:scale-[1.01]" 
+                style="border-color: var(--color-border); border-radius: var(--radius-2xl); padding: var(--spacing-6) var(--spacing-5);">
+                <h2 class="font-semibold mb-6 gradient-text text-center" 
+                  style="font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-3xl)); margin-bottom: var(--spacing-4); font-weight: var(--font-weight-semibold);">
+                  Project Overview
+                </h2>
+                <div class="prose prose-invert max-w-none">
+                  <p class="leading-relaxed mb-4 text-center" 
+                    style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--spacing-3);">
+                    This IoT Smart Home Relay Control System enables complete home automation through ESP32-C6 devices installed in every switch board. Each device controls multiple relays for lights, fans, and appliances, creating a unified smart home ecosystem.
+                  </p>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6" style="gap: var(--spacing-3); margin-top: var(--spacing-4);">
+                    <div class="bg-slate-800/30 rounded-lg border p-4" style="border-color: var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                      <h3 class="font-semibold text-blue-400 mb-2" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-1); font-weight: var(--font-weight-semibold);">Local Mesh Network</h3>
+                      <p class="text-slate-300 text-sm leading-relaxed" style="font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        Devices communicate through Wi-Fi AP based mesh network, functioning completely offline without internet connectivity.
+                      </p>
+                    </div>
+                    <div class="bg-slate-800/30 rounded-lg border p-4" style="border-color: var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                      <h3 class="font-semibold text-cyan-400 mb-2" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-1); font-weight: var(--font-weight-semibold);">BLE Gateway</h3>
+                      <p class="text-slate-300 text-sm leading-relaxed" style="font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        Mobile app connects via Bluetooth Low Energy to nearest ESP device, which routes commands through the mesh network.
+                      </p>
+                    </div>
+                    <div class="bg-slate-800/30 rounded-lg border p-4" style="border-color: var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                      <h3 class="font-semibold text-green-400 mb-2" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-1); font-weight: var(--font-weight-semibold);">Offline First</h3>
+                      <p class="text-slate-300 text-sm leading-relaxed" style="font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        System operates fully without internet. Optional cloud connectivity enables remote access and analytics when Wi-Fi is available.
+                      </p>
+                    </div>
+                    <div class="bg-slate-800/30 rounded-lg border p-4" style="border-color: var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                      <h3 class="font-semibold text-purple-400 mb-2" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-1); font-weight: var(--font-weight-semibold);">Multi-User Support</h3>
+                      <p class="text-slate-300 text-sm leading-relaxed" style="font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        Multiple family members can control devices simultaneously with real-time status synchronization across all devices and apps.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- System Architecture -->
+              <section class="glass rounded-3xl border reveal transition-all hover:border-blue-400/30 hover:transform hover:scale-[1.01]" 
+                style="border-color: var(--color-border); border-radius: var(--radius-2xl); padding: var(--spacing-6) var(--spacing-5);">
+                <h2 class="font-semibold mb-6 gradient-text text-center" 
+                  style="font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-3xl)); margin-bottom: var(--spacing-4); font-weight: var(--font-weight-semibold);">
+                  System Architecture
+                </h2>
+                <div class="prose prose-invert max-w-none">
+                  <div class="space-y-4" style="display: flex; flex-direction: column; gap: var(--spacing-3);">
+                    <div class="bg-slate-800/30 rounded-lg border p-4" style="border-color: var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                      <h3 class="font-semibold text-blue-400 mb-3" style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-2); font-weight: var(--font-weight-semibold);">1. ESP32-C6 Devices</h3>
+                      <p class="text-slate-300 leading-relaxed mb-2" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--spacing-1);">
+                        Each switch board contains an ESP32-C6 device running unified firmware that handles:
+                      </p>
+                      <ul class="list-disc list-inside space-y-1 ml-4" style="list-style: disc; list-style-position: inside; gap: var(--spacing-1); margin-left: var(--spacing-3);">
+                        <li class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Mesh network setup and management</li>
+                        <li class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">BLE gateway functionality</li>
+                        <li class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Relay control execution</li>
+                        <li class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Command routing and device identification</li>
+                        <li class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Real-time state synchronization</li>
+                      </ul>
+                    </div>
+                    <div class="bg-slate-800/30 rounded-lg border p-4" style="border-color: var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                      <h3 class="font-semibold text-cyan-400 mb-3" style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-2); font-weight: var(--font-weight-semibold);">2. Mesh Network (Wi-Fi AP Based)</h3>
+                      <p class="text-slate-300 leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        One ESP device creates a local mesh access point. All devices automatically join this mesh network, enabling data routing throughout the entire home without requiring a Wi-Fi router or internet connection.
+                      </p>
+                    </div>
+                    <div class="bg-slate-800/30 rounded-lg border p-4" style="border-color: var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                      <h3 class="font-semibold text-green-400 mb-3" style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-2); font-weight: var(--font-weight-semibold);">3. BLE Network</h3>
+                      <p class="text-slate-300 leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        Each ESP32-C6 device acts as a BLE gateway. The mobile app connects to the nearest ESP device via Bluetooth Low Energy, sends commands, and receives real-time status updates. Commands are then forwarded through the mesh network to target devices.
+                      </p>
+                    </div>
+                    <div class="bg-slate-800/30 rounded-lg border p-4" style="border-color: var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                      <h3 class="font-semibold text-purple-400 mb-3" style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-2); font-weight: var(--font-weight-semibold);">4. Optional Cloud Connectivity</h3>
+                      <p class="text-slate-300 leading-relaxed" style="font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        When Wi-Fi is available, the mesh gateway can connect to the internet, enabling remote control, data synchronization, analytics, and over-the-air (OTA) firmware updates. Internet connectivity is completely optional—the system remains fully functional offline.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- System Workflow -->
+              <section class="glass rounded-3xl border reveal transition-all hover:border-blue-400/30 hover:transform hover:scale-[1.01]" 
+                style="border-color: var(--color-border); border-radius: var(--radius-2xl); padding: var(--spacing-6) var(--spacing-5);">
+                <h2 class="font-semibold mb-6 gradient-text text-center" 
+                  style="font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-3xl)); margin-bottom: var(--spacing-4); font-weight: var(--font-weight-semibold);">
+                  System Workflow
+                </h2>
+                <div class="prose prose-invert max-w-none">
+                  <div class="space-y-4" style="display: flex; flex-direction: column; gap: var(--spacing-3);">
+                    <div class="flex items-start gap-3" style="gap: var(--spacing-2);">
+                      <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold" style="width: 2rem; height: 2rem; border-radius: 50%; font-size: var(--font-size-sm);">
+                        1
+                      </div>
+                      <div class="flex-1">
+                        <h3 class="font-semibold text-blue-400 mb-1" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-1); font-weight: var(--font-weight-semibold);">User → Mobile App</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed" style="font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                          User initiates relay control (ON/OFF) through the Android mobile application interface.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3" style="gap: var(--spacing-2);">
+                      <div class="flex-shrink-0 w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-bold" style="width: 2rem; height: 2rem; border-radius: 50%; font-size: var(--font-size-sm);">
+                        2
+                      </div>
+                      <div class="flex-1">
+                        <h3 class="font-semibold text-cyan-400 mb-1" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-1); font-weight: var(--font-weight-semibold);">App → BLE → Nearby ESP</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed" style="font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                          Mobile app establishes BLE connection with the nearest ESP32-C6 device and transmits the control command.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3" style="gap: var(--spacing-2);">
+                      <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 font-bold" style="width: 2rem; height: 2rem; border-radius: 50%; font-size: var(--font-size-sm);">
+                        3
+                      </div>
+                      <div class="flex-1">
+                        <h3 class="font-semibold text-green-400 mb-1" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-1); font-weight: var(--font-weight-semibold);">ESP → Mesh Network</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed" style="font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                          Receiving ESP device broadcasts the command through the mesh network, which automatically identifies and routes to the target ESP device.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3" style="gap: var(--spacing-2);">
+                      <div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold" style="width: 2rem; height: 2rem; border-radius: 50%; font-size: var(--font-size-sm);">
+                        4
+                      </div>
+                      <div class="flex-1">
+                        <h3 class="font-semibold text-purple-400 mb-1" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-1); font-weight: var(--font-weight-semibold);">Target ESP → Relay Control</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed" style="font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                          Target ESP32-C6 device executes the command and controls the relay (turning lights, fans, or appliances ON/OFF).
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3" style="gap: var(--spacing-2);">
+                      <div class="flex-shrink-0 w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 font-bold" style="width: 2rem; height: 2rem; border-radius: 50%; font-size: var(--font-size-sm);">
+                        5
+                      </div>
+                      <div class="flex-1">
+                        <h3 class="font-semibold text-yellow-400 mb-1" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-1); font-weight: var(--font-weight-semibold);">Status Sync</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed" style="font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                          After relay action, the device broadcasts updated status through the mesh network. All ESP devices and the mobile app receive real-time status updates, maintaining synchronized state across the entire system.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Current Status -->
+              <section class="glass rounded-3xl border relative overflow-hidden reveal transition-all hover:border-blue-400/30 hover:transform hover:scale-[1.01]" 
+                style="border-color: var(--color-border); border-radius: var(--radius-2xl); padding: var(--spacing-6) var(--spacing-5);">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-green-500/8 rounded-full blur-3xl" style="width: 16rem; height: 16rem; border-radius: 50%;"></div>
+                <div class="relative z-10">
+                  <h2 class="font-semibold mb-6 gradient-text text-center" 
+                    style="font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-3xl)); margin-bottom: var(--spacing-4); font-weight: var(--font-weight-semibold);">
+                    Current Status
+                  </h2>
+                  <div class="prose prose-invert max-w-none">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6" style="gap: var(--spacing-3); margin-bottom: var(--spacing-4);">
+                      <div class="bg-green-500/10 border border-green-500/30 rounded-lg p-4" style="border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                        <div class="flex items-center gap-2 mb-2" style="gap: var(--spacing-1); margin-bottom: var(--spacing-1);">
+                          <div class="w-2 h-2 rounded-full bg-green-400" style="width: 0.5rem; height: 0.5rem; border-radius: 50%;"></div>
+                          <h3 class="font-semibold text-green-400" style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold);">ESP32-C6 Firmware</h3>
+                        </div>
+                        <p class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                          80-90% complete. Mesh network & BLE gateway functional. OTA updates optional.
+                        </p>
+                      </div>
+                      <div class="bg-green-500/10 border border-green-500/30 rounded-lg p-4" style="border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                        <div class="flex items-center gap-2 mb-2" style="gap: var(--spacing-1); margin-bottom: var(--spacing-1);">
+                          <div class="w-2 h-2 rounded-full bg-green-400" style="width: 0.5rem; height: 0.5rem; border-radius: 50%;"></div>
+                          <h3 class="font-semibold text-green-400" style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold);">Mobile App</h3>
+                        </div>
+                        <p class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                          70% complete. Basic control functional. Advanced UI pending.
+                        </p>
+                      </div>
+                      <div class="bg-green-500/10 border border-green-500/30 rounded-lg p-4" style="border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                        <div class="flex items-center gap-2 mb-2" style="gap: var(--spacing-1); margin-bottom: var(--spacing-1);">
+                          <div class="w-2 h-2 rounded-full bg-green-400" style="width: 0.5rem; height: 0.5rem; border-radius: 50%;"></div>
+                          <h3 class="font-semibold text-green-400" style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold);">Hardware</h3>
+                        </div>
+                        <p class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                          ESP32-C6 devices tested individually. Mesh network prototype functional.
+                        </p>
+                      </div>
+                      <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4" style="border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                        <div class="flex items-center gap-2 mb-2" style="gap: var(--spacing-1); margin-bottom: var(--spacing-1);">
+                          <div class="w-2 h-2 rounded-full bg-blue-400 animate-pulse" style="width: 0.5rem; height: 0.5rem; border-radius: 50%;"></div>
+                          <h3 class="font-semibold text-blue-400" style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold);">Cloud Backend</h3>
+                        </div>
+                        <p class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                          Optional. Not fully implemented. Remote control & analytics pending.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="bg-slate-800/30 rounded-lg border p-4" style="border-color: var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-3);">
+                      <h3 class="font-semibold text-yellow-400 mb-2" style="font-size: var(--font-size-base); margin-bottom: var(--spacing-1); font-weight: var(--font-weight-semibold);">Pending Tasks</h3>
+                      <ul class="list-disc list-inside space-y-1 ml-4" style="list-style: disc; list-style-position: inside; gap: var(--spacing-1); margin-left: var(--spacing-3);">
+                        <li class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Cloud sync & OTA updates</li>
+                        <li class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Multi-user app testing</li>
+                        <li class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Advanced UI & mobile optimizations</li>
+                        <li class="text-slate-300 text-sm" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Full house deployment testing</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </>
+          ) : (
+            <>
+              <!-- Problem -->
+              <section class="glass rounded-3xl border reveal transition-all hover:border-blue-400/30 hover:transform hover:scale-[1.01]" 
+                style="border-color: var(--color-border); border-radius: var(--radius-2xl); padding: var(--spacing-6) var(--spacing-5);">
+                <h2 class="font-semibold mb-6 gradient-text text-center" 
+                  style="font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-3xl)); margin-bottom: var(--spacing-4); font-weight: var(--font-weight-semibold);">
+                  Problem
+                </h2>
+                <div class="prose prose-invert max-w-none text-center">
+                  <p class="leading-relaxed" 
+                    style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                    The client needed a robust solution to address {projectDescription.toLowerCase()}. 
+                    The existing systems were inefficient, lacked modern features, and couldn't scale to meet 
+                    growing demands. Key challenges included handling high traffic volumes, ensuring data 
+                    reliability, and providing an intuitive user experience across all devices.
+                  </p>
+                </div>
+              </section>
+
+              <!-- Solution -->
+              <section class="glass rounded-3xl border reveal transition-all hover:border-blue-400/30 hover:transform hover:scale-[1.01]" 
+                style="border-color: var(--color-border); border-radius: var(--radius-2xl); padding: var(--spacing-6) var(--spacing-5);">
+                <h2 class="font-semibold mb-6 gradient-text text-center" 
+                  style="font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-3xl)); margin-bottom: var(--spacing-4); font-weight: var(--font-weight-semibold);">
+                  Solution
+                </h2>
+                <div class="prose prose-invert max-w-none text-center">
+                  <p class="leading-relaxed mb-4" 
+                    style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--spacing-3);">
+                    I developed a comprehensive solution leveraging modern web technologies. The frontend was 
+                    built with semantic HTML5, advanced CSS3 for responsive design, and JavaScript for 
+                    interactive features. The backend utilized Python with {framework} to handle business 
+                    logic and data processing.
+                  </p>
+                  <p class="leading-relaxed" 
+                    style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                    {projectContribution}
+                  </p>
+                </div>
+              </section>
+
+              <!-- Challenges -->
+              <section class="glass rounded-3xl border reveal transition-all hover:border-blue-400/30 hover:transform hover:scale-[1.01]" 
+                style="border-color: var(--color-border); border-radius: var(--radius-2xl); padding: var(--spacing-6) var(--spacing-5);">
+                <h2 class="font-semibold mb-6 gradient-text text-center" 
+                  style="font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-3xl)); margin-bottom: var(--spacing-4); font-weight: var(--font-weight-semibold);">
+                  Challenges
+                </h2>
+                <div class="prose prose-invert max-w-none text-center">
+                  <ul class="list-disc list-inside space-y-3 inline-block text-left" 
+                    style="list-style: disc; list-style-position: inside; display: inline-block; text-align: left; gap: var(--spacing-2);">
+                    <li class="leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                      Integrating multiple third-party APIs while maintaining performance and reliability
+                    </li>
+                    <li class="leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                      Ensuring cross-browser compatibility and responsive design across various devices
+                    </li>
+                    <li class="leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                      Optimizing database queries to handle large datasets efficiently
+                    </li>
+                    <li class="leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                      Implementing real-time features while maintaining low latency
+                    </li>
+                    <li class="leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                      Balancing feature richness with fast page load times
+                    </li>
+                  </ul>
+                </div>
+              </section>
+
+              <!-- Results -->
+              <section class="glass rounded-3xl border relative overflow-hidden reveal transition-all hover:border-blue-400/30 hover:transform hover:scale-[1.01]" 
+                style="border-color: var(--color-border); border-radius: var(--radius-2xl); padding: var(--spacing-6) var(--spacing-5);">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/8 rounded-full blur-3xl" style="width: 16rem; height: 16rem; border-radius: 50%;"></div>
+                <div class="relative z-10">
+                  <h2 class="font-semibold mb-6 gradient-text text-center" 
+                    style="font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-3xl)); margin-bottom: var(--spacing-4); font-weight: var(--font-weight-semibold);">
+                    Results
+                  </h2>
+                  <div class="prose prose-invert max-w-none text-center">
+                    <p class="leading-relaxed mb-4" 
+                      style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--spacing-3);">
+                      The project was successfully delivered, meeting all client requirements and exceeding 
+                      performance expectations. Key achievements include:
+                    </p>
+                    <ul class="list-disc list-inside space-y-3 inline-block text-left" 
+                      style="list-style: disc; list-style-position: inside; display: inline-block; text-align: left; gap: var(--spacing-2);">
+                      <li class="leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        Significantly improved user experience with intuitive interface design
+                      </li>
+                      <li class="leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        Enhanced system performance through code optimization and efficient architecture
+                      </li>
+                      <li class="leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        Scalable solution capable of handling future growth
+                      </li>
+                      <li class="leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        Positive feedback from end users and stakeholders
+                      </li>
+                      <li class="leading-relaxed" style="font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary);">
+                        Foundation for future enhancements and feature additions
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+            </>
+          )}
+        </div>
+
+        <!-- Navigation - Enhanced -->
+        <div class="mt-16 pt-8 border-t flex flex-col sm:flex-row justify-between items-center flex-wrap gap-4 reveal" 
+          style="margin-top: var(--spacing-10); padding-top: var(--spacing-6); border-color: var(--color-border); gap: var(--spacing-3);">
+          <a
+            href="/projects"
+            class="inline-flex items-center gap-2 group transition-all hover:translate-x-[-4px]"
+          >
+            <div class="flex items-center justify-center w-10 h-10 rounded-lg border transition-all group-hover:border-blue-400/50 group-hover:bg-blue-500/10"
+              style="width: 2.5rem; height: 2.5rem; border-radius: var(--radius-md); border-color: var(--color-border);">
+              <svg class="w-5 h-5 text-blue-400 transition-transform group-hover:translate-x-[-2px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 1.25rem; height: 1.25rem;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </div>
+            <span class="text-blue-400 font-medium group-hover:text-blue-300 transition-colors" style="font-size: var(--font-size-base); font-weight: var(--font-weight-medium);">
+              All Projects
+            </span>
+          </a>
+          <a
+            href="/contact"
+            class="btn-primary inline-flex items-center justify-center gap-2"
+            style="gap: var(--spacing-2);"
+          >
+            Discuss Similar Project
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 1.25rem; height: 1.25rem;">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Enhanced back button functionality and page visibility check
+  document.addEventListener('DOMContentLoaded', () => {
+    // Debug: Check if content is loaded
+    const mainContent = document.querySelector('main article');
+    if (!mainContent) {
+      console.error('Main content not found on page');
+      // Show error message if content is missing
+      document.body.innerHTML = '<div style="padding: 2rem; text-align: center; color: white;"><h1>Error: Content not found</h1><p>Please check the console for details.</p></div>';
+      return;
+    }
+    
+    // Log that page loaded successfully
+    console.log('Case Study page loaded successfully');
+    console.log('Project:', document.querySelector('h1')?.textContent || 'Unknown');
+    
+    // Ensure main content is visible
+    if (mainContent) {
+      mainContent.style.display = 'block';
+      mainContent.style.visibility = 'visible';
+      mainContent.style.opacity = '1';
+    }
+    
+    const backButtons = document.querySelectorAll('a[href="/projects"]');
+    
+    backButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        // Allow normal navigation, but also support browser back
+        // The href="/projects" will handle the navigation
+      });
+    });
+    
+    // Ensure reveal animations work
+    const revealElements = document.querySelectorAll('.reveal');
+    if (revealElements.length > 0) {
+      revealElements.forEach((el, index) => {
+        // Make elements visible immediately
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+        setTimeout(() => {
+          el.classList.add('visible');
+        }, index * 50);
+      });
+    }
+  });
+</script>
+
