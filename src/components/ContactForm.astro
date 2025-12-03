@@ -157,6 +157,8 @@ const RECIPIENT_EMAIL = 'Ramizbhaipinjara@gmail.com';
       if (useWeb3Forms) {
         try {
           // Use Web3Forms API
+          // Note: Web3Forms sends emails to the email address registered with the access key
+          // The to_email parameter is not supported - emails go to the registered email automatically
           const response = await fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: {
@@ -168,12 +170,14 @@ const RECIPIENT_EMAIL = 'Ramizbhaipinjara@gmail.com';
               subject: `Contact Form Submission from ${name}`,
               from_name: name,
               from_email: email,
-              message: message,
-              to_email: recipientEmail
+              message: message
             })
           });
           
           const result = await response.json();
+          
+          // Log response for debugging (remove in production if needed)
+          console.log('Web3Forms Response:', result);
           
           if (result.success) {
             // Success
@@ -202,6 +206,8 @@ const RECIPIENT_EMAIL = 'Ramizbhaipinjara@gmail.com';
               }
             });
           } else {
+            // Log detailed error information
+            console.error('Web3Forms Error:', result);
             throw new Error(result.message || 'Submission failed');
           }
         } catch (error) {
