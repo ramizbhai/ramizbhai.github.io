@@ -2,7 +2,7 @@ export const SITE_CONFIG = {
   name: "Ramizbhai Pinjara",
   title: "Web Developer Portfolio",
   description: "Professional web developer specializing in HTML, CSS, JavaScript, and Python. Building scalable, robust web solutions since 2021.",
-  url: "https://ramizbhai24-7.github.io/RAMIZBHAI-PINJARA",
+  url: "https://ramizbhai.github.io",
   author: "Ramizbhai Pinjara",
   experienceStartYear: 2021,
   currentYear: new Date().getFullYear(),
@@ -41,7 +41,7 @@ export const SKILLS = {
 };
 
 export const SOCIAL_LINKS = {
-  github: "https://github.com/ramizbhai24-7/",
+  github: "https://github.com/ramizbhai/",
   linkedin: "https://in.linkedin.com/in/ramizbhai-pinjara",
   email: "Ramizbhaipinjara@gmail.com",
 };
